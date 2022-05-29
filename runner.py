@@ -1,14 +1,16 @@
 from aiogram.utils import executor
 
-from handlers import h_client
+from database import db_sqlite
+from handlers import h_client, h_admin
 from imports import dp
 
 
 async def on_startup(_):
     print("Бот запустился.")
+    print("База данных запустилась")
 
-h_client.register_handlers_for_clients()
-# h_admin.register_handlers_for_admins()
+h_client.register_handlers_for_client()
+# h_admin.register_handlers_for_admin()
 
 
 def main():
