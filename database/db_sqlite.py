@@ -8,15 +8,11 @@ class Database:
 
     def sql_get_timetable_today(self, date):
         with self.connection:
-            return self.cursor.execute("SELECT * "
-                                       "FROM 'timetable' "
-                                       "WHERE 'date' = ? "
-                                       "ORDER BY 'number'",
-                                       (date,)).fetchall()
+            return self.cursor.execute("""SELECT * FROM timetable WHERE date = ? """, (date,)).fetchall()
 
     def get_all(self):
         with self.connection:
-            return self.cursor.execute("SELECT * FROM timetable;",).fetchall()
+            return self.cursor.execute("SELECT * FROM timetable;",).fetchone()
 
 # async def sql_add_command(state):
 #     async with state.proxy() as data:

@@ -12,7 +12,10 @@ async def start(message: types.Message):
 
 
 async def get_timetable(message: types.Message):
-    await message.answer(database.db_sqlite.Database('database/db.db').get_all())
+    result = database.db_sqlite.Database('database/db.db').sql_get_timetable_today('30/05')
+    for row in result:
+        list_ = f"Пары на 30/05:\n{row[1], row[2], row[3]}"
+        await message.reply(list_)
 
 
 def register_handlers_for_client():
