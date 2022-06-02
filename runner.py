@@ -7,7 +7,6 @@ from imports import dp
 
 async def on_startup(_):
     print("Бот запустился.")
-    print("База данных запустилась")
 
 h_client.register_handlers_for_client()
 # h_admin.register_handlers_for_admin()
