@@ -31,8 +31,15 @@ class Database:
     def sql_get_timetable_by_date(self, date):
         with self.connection:
             return self.cursor.execute("""SELECT * FROM timetable WHERE 
-            date = ? """, (date,)).fetchall()
+            date = ?""", (date,)).fetchall()
+
+    def sql_get_exams(self, type_1, type_2):
+        with self.connection:
+            return self.cursor.execute("""SELECT * FROM timetable WHERE
+            type = ? OR type = ?""", (type_1, type_2)).fetchall()
+
 
     def sql_get_all_lessons(self):
         with self.connection:
-            return self.cursor.execute("SELECT * FROM timetable;",).fetchall()
+            return self.cursor.execute("""SELECT * FROM timetable""",).\
+                fetchall()

@@ -34,11 +34,16 @@ async def get_timetable_for_today(message: types.Message):
     today = dt.date.today().strftime('%d/%m')
     result = database.db_sqlite.Database('database/db.db'). \
         sql_get_timetable_by_date(today)
-    res = ''
-    for i in result:
-        row = ' | '.join(i[1:])
-        res += f'\n\n{row}'
-    await message.reply(res, reply_markup=kb_client)
+    if result == []:
+        await message.reply(
+            "Сегодня нет пар. Отдыхай. Или готовься. Делай что хочешь.",
+            reply_markup=kb_client)
+    else:
+        res = ''
+        for i in result:
+            row = ' | '.join(i[1:])
+            res += f'\n\n{row}'
+        await message.reply(res, reply_markup=kb_client)
 
 
 async def get_timetable_for_tomorrow(message: types.Message):
@@ -59,10 +64,21 @@ async def get_timetable_for_tomorrow(message: types.Message):
         await message.answer(res, reply_markup=kb_client)
 
 
+async def get_exams(message: types.Message):
+    result = database.db_sqlite.Database('database/db.db').\
+        sql_get_exams('З', 'КЭ, Э')
+    res = ''
+    for i in result:
+        row = ' | '.join(i)
+        res += f'\n\n{row}'
+    await message.reply(res, reply_markup=kb_client)
+
+
 async def get_all_timetable(message: types.Message):
     add_user_by_use(message)
     update_last_use(message)
-    result = database.db_sqlite.Database('database/db.db').sql_get_all_lessons()
+    result = database.db_sqlite.Database('database/db.db').\
+        sql_get_all_lessons()
     long = len(result)
     half = int(long / 2)
     part_1 = result[:half]
@@ -87,4 +103,5 @@ def register_handlers_for_client():
                                 commands=['Расписание_на_сегодня'])
     dp.register_message_handler(get_timetable_for_tomorrow,
                                 commands=['Расписание_на_завтра'])
+    dp.register_message_handler(get_exams, commands=['Зачеты_и_экзамены'])
     dp.register_message_handler(get_all_timetable, commands=['Все_расписание'])
