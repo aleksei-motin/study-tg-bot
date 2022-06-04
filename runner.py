@@ -1,3 +1,5 @@
+import time
+
 from aiogram.utils import executor
 
 from handlers import h_client
@@ -15,4 +17,9 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    while True:
+        try:
+            main()
+        except Exception as e:
+            print(e)
+            time.sleep(15)
