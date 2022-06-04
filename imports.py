@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from api_token import API_TOKEN

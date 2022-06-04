@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 from aiogram import types
 import database
 from imports import dp
