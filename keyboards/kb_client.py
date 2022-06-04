@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
 button_1 = KeyboardButton('/Расписание_на_сегодня')
