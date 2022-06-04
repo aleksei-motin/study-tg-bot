@@ -36,7 +36,7 @@ async def get_timetable_for_today(message: types.Message):
         sql_get_timetable_by_date(today)
     if result == []:
         await message.reply(
-            "Сегодня нет пар. Отдыхай. Или готовься. Делай что хочешь.",
+            "Сегодня занятий нет.",
             reply_markup=kb_client)
     else:
         res = ''
@@ -54,7 +54,7 @@ async def get_timetable_for_tomorrow(message: types.Message):
         sql_get_timetable_by_date(tomorrow)
     if result == []:
         await message.reply(
-            "Пар на завтра нет. Скорее всего завтра воскресенье.",
+            "Завтра занятий нет.",
             reply_markup=kb_client)
     else:
         res = ''
