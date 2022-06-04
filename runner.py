@@ -1,7 +1,6 @@
 from aiogram.utils import executor
 
-from database import db_sqlite
-from handlers import h_client, h_admin
+from handlers import h_client
 from imports import dp
 
 
@@ -9,7 +8,6 @@ async def on_startup(_):
     print("Бот запустился.")
 
 h_client.register_handlers_for_client()
-# h_admin.register_handlers_for_admin()
 
 
 def main():
