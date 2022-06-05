@@ -23,8 +23,8 @@ def update_last_use(message: types.Message):
 async def start(message: types.Message):
     add_user_by_use(message)
     update_last_use(message)
-    await message.answer("Привет!\n\nЯ бот для студентов группы 01-ЭКЗ2831 "
-                         "АТиСО.\n\nДля продолжения выбери вариант расписания",
+    await message.answer("Привет!\n\nЯ бот c расписанием занятий."
+                         "\nДля продолжения выбери вариант расписания.",
                          reply_markup=kb_client)
 
 
