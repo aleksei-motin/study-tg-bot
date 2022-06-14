@@ -65,6 +65,8 @@ async def get_timetable_for_tomorrow(message: types.Message):
 
 
 async def get_exams(message: types.Message):
+    add_user_by_use(message)
+    update_last_use(message)
     result = database.db_sqlite.Database('database/db.db').\
         sql_get_exams('З', 'КЭ, Э')
     res = ''
