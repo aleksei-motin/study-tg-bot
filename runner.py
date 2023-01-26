@@ -1,16 +1,13 @@
 # -*- coding: utf8 -*-
-import time
 
-from aiogram.utils import executor
-
-from handlers import h_client
-from imports import dp
+import handlers
+from imports import executor, dp, t
 
 
 async def on_startup(_):
-    print("Бот запустился.")
+    handlers.Handlers().get_timetable()
 
-h_client.register_handlers_for_client()
+    print("Бот запустился.")
 
 
 def main():
@@ -23,4 +20,4 @@ if __name__ == '__main__':
             main()
         except Exception as e:
             print(e)
-            time.sleep(15)
+            t.sleep(15)
