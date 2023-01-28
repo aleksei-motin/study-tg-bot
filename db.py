@@ -24,10 +24,9 @@ class Database:
             return self.cursor.execute("""UPDATE users SET 
             last_active = ? WHERE user_id = ?""", (last_use, user_id,))
 
-    def sql_get_user(self, user_id):
+    def sql_users_usage(self):
         with self.connection:
-            return self.cursor.execute("""SELECT * FROM users WHERE 
-            user_id = ?""", (user_id,)).fetchone()
+            return self.cursor.execute("""SELECT * FROM users""",).fetchall()
 
     def sql_get_timetable_by_date(self, date):
         with self.connection:

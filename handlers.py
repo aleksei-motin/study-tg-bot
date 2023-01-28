@@ -5,6 +5,10 @@ import keyboard
 import db
 
 
+TODAY = dt.date.today().strftime('%d/%m')
+TOMORROW = (dt.date.today() + dt.timedelta(days=1)).strftime('%d/%m')
+
+
 def add_user_by_use(user_id, username):
     if not db.Database('db.db').sql_user_exists(user_id):
         db.Database('db.db').sql_add_user(user_id, username)
@@ -26,10 +30,20 @@ async def start(message: types.Message):
                          reply_markup=keyboard.timetable)
 
 
-class Handlers:
+@dp.message_handler(commands='usage')
+async def users_usage(message: types.Message):
+    users_usage_db_result = db.Database('db.db').sql_users_usage()
+    if message.from_user.id == 427632571:
+        users_usage_db_result_formatted = ''
+        for i in users_usage_db_result:
+            row = ' | '.join(map(str, i))
+            users_usage_db_result_formatted += f'\n\n{row}'
+        await message.answer(users_usage_db_result_formatted)
+    else:
+        await message.answer("Доступ запрещен")
 
-    TODAY = dt.date.today().strftime('%d/%m')
-    TOMORROW = (dt.date.today() + dt.timedelta(days=1)).strftime('%d/%m')
+
+class Handlers:
 
     timetable_get_today = db.Database('db.db').sql_get_timetable_by_date(TODAY)
     timetable_get_tomorrow = db.Database('db.db').sql_get_timetable_by_date(TOMORROW)
