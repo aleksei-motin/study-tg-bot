@@ -1,8 +1,12 @@
 # -*- coding: utf8 -*-
 
-from imports import dp, types, bot, dt
-import keyboard
+import datetime as dt
+
+from aiogram import types
+
 import db
+import keyboard
+from runner import dp, bot
 
 
 TODAY = dt.date.today().strftime('%d/%m')
