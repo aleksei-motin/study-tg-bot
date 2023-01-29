@@ -1,12 +1,21 @@
 # -*- coding: utf8 -*-
 
 import datetime as dt
+import time
 
+from aiogram import Bot, Dispatcher
 from aiogram import types
+from aiogram.contrib.fsm_storage.memory import MemoryStorage
+from aiogram.utils import executor
 
 import db
 import keyboard
-from runner import dp, bot
+from api_token import API_TOKEN
+
+
+storage = MemoryStorage()
+bot = Bot(API_TOKEN)
+dp = Dispatcher(bot, storage=storage)
 
 
 TODAY = dt.date.today().strftime('%d/%m')
@@ -92,3 +101,21 @@ class Handlers:
                                 row = ' | '.join(map(str, i))
                                 result += f'\n\n{row}'
                             await callback.message.answer(f'{value[1]}{result}', reply_markup=keyboard.timetable)
+
+
+async def on_startup(_):
+    print("Бот запустился.")
+
+
+def main():
+    Handlers().get_timetable()
+    executor.start_polling(dp, skip_updates=True, on_startup=on_startup)
+
+
+if __name__ == '__main__':
+    while True:
+        try:
+            main()
+        except Exception as e:
+            print(e)
+            time.sleep(15)

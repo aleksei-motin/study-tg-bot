@@ -2,3 +2,4 @@
 api_token*
 *pycache*
 *venv*
+.gitignore
