@@ -8,6 +8,11 @@ import db
 TODAY = dt.date.today().strftime('%d/%m')
 TOMORROW = (dt.date.today() + dt.timedelta(days=1)).strftime('%d/%m')
 
+timetable_get_today = db.Database('db.db').sql_get_timetable_by_date(TODAY)
+timetable_get_tomorrow = db.Database('db.db').sql_get_timetable_by_date(TOMORROW)
+timetable_get_exams = db.Database('db.db').sql_get_exams('З', 'КЭ, Э', 'КЭ, КР(П), Э', 'НИР', 'НИР, З', 'П', 'П, З')
+timetable_get_all = db.Database('db.db').sql_get_all_lessons()
+
 
 def add_user_by_use(user_id, username):
     if not db.Database('db.db').sql_user_exists(user_id):
@@ -44,11 +49,6 @@ async def users_usage(message: types.Message):
 
 
 class Handlers:
-
-    timetable_get_today = db.Database('db.db').sql_get_timetable_by_date(TODAY)
-    timetable_get_tomorrow = db.Database('db.db').sql_get_timetable_by_date(TOMORROW)
-    timetable_get_exams = db.Database('db.db').sql_get_exams('З', 'КЭ, Э', 'КЭ, КР(П), Э', 'НИР', 'НИР, З', 'П', 'П, З')
-    timetable_get_all = db.Database('db.db').sql_get_all_lessons()
 
     data = {
         'timetable_today': [timetable_get_today, 'Сегодня в расписании'],
