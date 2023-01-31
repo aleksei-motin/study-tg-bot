@@ -26,6 +26,13 @@ timetable_get_tomorrow = db.Database('db.db').sql_get_timetable_by_date(TOMORROW
 timetable_get_exams = db.Database('db.db').sql_get_exams('З', 'КЭ, Э', 'КЭ, КР(П), Э', 'НИР', 'НИР, З', 'П', 'П, З')
 timetable_get_all = db.Database('db.db').sql_get_all_lessons()
 
+data = {
+    'timetable_today': [timetable_get_today, 'Сегодня в расписании'],
+    'timetable_tomorrow': [timetable_get_tomorrow, 'Завтра в расписании'],
+    'timetable_exams': [timetable_get_exams, 'Все зачеты, консультации, экзамены, защиты'],
+    'timetable_all': [timetable_get_all, 'Расписание на сессию 1 часть', 'Расписание на сессию 2 часть']
+}
+
 
 def add_user_by_use(user_id, username):
     if not db.Database('db.db').sql_user_exists(user_id):
@@ -61,46 +68,36 @@ async def users_usage(message: types.Message):
         await message.answer("Доступ запрещен")
 
 
-class Handlers:
-
-    data = {
-        'timetable_today': [timetable_get_today, 'Сегодня в расписании'],
-        'timetable_tomorrow': [timetable_get_tomorrow, 'Завтра в расписании'],
-        'timetable_exams': [timetable_get_exams, 'Все зачеты, консультации, экзамены, защиты'],
-        'timetable_all': [timetable_get_all, 'Расписание на сессию 1 часть', 'Расписание на сессию 2 часть']
-    }
-
-    def get_timetable(self):
-        @dp.callback_query_handler()
-        async def _get_timetable(callback: types.CallbackQuery):
-            add_user_by_use(callback.from_user.id, callback.from_user.username)
-            update_last_use(callback.from_user.id)
-            for key, value in self.data.items():
-                if callback.data == key:
-                    if callback.data == 'timetable_all':
-                        long = len(value[0])
-                        half = int(long / 2)
-                        part_1 = value[0][:half]
-                        result_1 = ''
-                        for i in part_1:
-                            row = ' | '.join(map(str, i))
-                            result_1 += f'\n\n{row}'
-                        part_2 = value[0][half:]
-                        result_2 = ''
-                        for i in part_2:
-                            row = ' | '.join(map(str, i))
-                            result_2 += f'\n\n{row}'
-                        await bot.send_message(callback.from_user.id, f"{value[1]}{result_1}")
-                        await callback.message.answer(f'{value[2]}{result_2}', reply_markup=keyboard.timetable)
-                    else:
-                        if not value[0]:
-                            await callback.message.answer("Занятий нет", reply_markup=keyboard.timetable)
-                        else:
-                            result = ''
-                            for i in value[0]:
-                                row = ' | '.join(map(str, i))
-                                result += f'\n\n{row}'
-                            await callback.message.answer(f'{value[1]}{result}', reply_markup=keyboard.timetable)
+@dp.callback_query_handler()
+async def get_timetable(callback: types.CallbackQuery):
+    add_user_by_use(callback.from_user.id, callback.from_user.username)
+    update_last_use(callback.from_user.id)
+    for key, value in data.items():
+        if callback.data == key:
+            if callback.data == 'timetable_all':
+                long = len(value[0])
+                half = int(long / 2)
+                part_1 = value[0][:half]
+                result_1 = ''
+                for i in part_1:
+                    row = ' | '.join(map(str, i))
+                    result_1 += f'\n\n{row}'
+                part_2 = value[0][half:]
+                result_2 = ''
+                for i in part_2:
+                    row = ' | '.join(map(str, i))
+                    result_2 += f'\n\n{row}'
+                await bot.send_message(callback.from_user.id, f"{value[1]}{result_1}")
+                await callback.message.answer(f'{value[2]}{result_2}', reply_markup=keyboard.timetable)
+            else:
+                if not value[0]:
+                    await callback.message.answer("Занятий нет", reply_markup=keyboard.timetable)
+                else:
+                    result = ''
+                    for i in value[0]:
+                        row = ' | '.join(map(str, i))
+                        result += f'\n\n{row}'
+                    await callback.message.answer(f'{value[1]}{result}', reply_markup=keyboard.timetable)
 
 
 async def on_startup(_):
@@ -108,7 +105,6 @@ async def on_startup(_):
 
 
 def main():
-    Handlers().get_timetable()
     executor.start_polling(dp, skip_updates=True, on_startup=on_startup)
 
 
