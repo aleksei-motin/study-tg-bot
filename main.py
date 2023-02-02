@@ -112,7 +112,7 @@ async def get_timetable_all(callback: types.CallbackQuery):
         row = ' | '.join(map(str, i))
         result_2 += f'\n\n{row}'
     await bot.send_message(callback.from_user.id, f'Расписание на сессию 1 часть{result_1}')
-    await callback.message.answer(f'Расписание на сессию 1 часть{result_2}', reply_markup=keyboard.timetable)
+    await callback.message.answer(f'Расписание на сессию 2 часть{result_2}', reply_markup=keyboard.timetable)
 
 
 async def on_startup(_):
